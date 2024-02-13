@@ -36,7 +36,11 @@ app.post('/create', async (req, res) => {
     if (exists) {
       res.redirect('/exists');
     } else {
-      await fs.rename(tempFilePath, finalFilePath);
+      // rename does not work when mounting feedback folder on host machine
+      // (node:1) UnhandledPromiseRejectionWarning: Error: EXDEV: cross-device link not permitted, rename '/app/temp/a.txt' -> '/app/feedback/a.txt'
+      // workaround: copy temp file to feedback folder, then delete the temp file
+      await fs.copyFile(tempFilePath, finalFilePath);
+      await fs.rm(tempFilePath);
       res.redirect('/');
     }
   });
