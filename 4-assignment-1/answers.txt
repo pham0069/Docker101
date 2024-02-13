@@ -1,0 +1,54 @@
+1) Create appropriate images for both apps (two separate images!).
+a) 
+- create Dockerfile in nodejs-app folder
+- cd Docker/4-assignment-1
+- cd node-app
+- docker build .
+(09117987)
+b) 
+- - create Dockerfile in python-app folder
+- cd ../python-ap
+- docker build .
+(dc96d1fb)
+
+
+2) Launch a container for each created image, making sure, 
+that the app inside the container works correctly and is usable.
+
+a) 
+- docker run -p 8000:3000 09117987
+(open localhost:8000 to see 'Hello from ...')
+b)
+- docker run -it dc96d1fb
+(enter input when prompt)
+
+3) Re-create both containers and assign names to both containers.
+Use these names to stop and restart both containers.
+a)
+- docker run -p 8000:3000 --name hello 09117987
+- docker stop hello
+- docker start hello
+b) 
+- docker run -it --name bmi dc96d1fb
+- docker start -ai bmi
+- docker stop bmi
+
+4) Clean up (remove) all stopped (and running) containers, 
+clean up all created images.
+- docker ps
+- docker rm bmi hello bb9410c2a30a 1ecd81ae22c4
+- docker images
+- docker rmi dc96d1fbe779 09117987bac1
+
+5) Re-build the images - this time with names and tags assigned to them.
+a)
+- docker build -t hello:latest .
+b) 
+- docker build -t bmi:latest .
+
+6) Run new containers based on the re-built images, ensuring that the containers
+are removed automatically when stopped.
+a)
+- docker run -p 8000:3000 --rm --name hello hello:latest 
+b)
+- docker run -it --rm --name bmi bmi:latest
